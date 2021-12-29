@@ -8,4 +8,10 @@ add_executable(bmod src/main.c src/game.c src/window.c src/logger.c src/glad/gla
 find_library(GLFW glfw)
 target_link_libraries(bmod PUBLIC ${GLFW} m dl)
 
-add_custom_command(TARGET bmod POST_BUILD COMMAND ${CMAKE_COMMAND} -E copy_directory ${CMAKE_SOURCE_DIR}/res $<TARGET_FILE_DIR:bmod>/res)
+add_custom_command(
+	TARGET bmod POST_BUILD
+	COMMAND ${CMAKE_COMMAND} -E create_symlink
+	${CMAKE_SOURCE_DIR}/res $<TARGET_FILE_DIR:bmod>/res)
+
+install(TARGETS bmod DESTINATION bin)
+install(DIRECTORY res DESTINATION share/bmod)
