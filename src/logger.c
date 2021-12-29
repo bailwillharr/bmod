@@ -42,6 +42,7 @@ void log_init(const char *path)
 void log_destroy()
 {
 	fclose(logger_out);
+	logger_out = NULL;
 }
 
 void log_log(const char *format, ...)
