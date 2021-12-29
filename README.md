@@ -1,4 +1,5 @@
-##INSTALLATION
+## INSTALLATION
+
 ```sh
 mkdir build
 cd build
