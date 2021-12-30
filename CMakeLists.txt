@@ -14,4 +14,4 @@ add_custom_command(
 	${CMAKE_SOURCE_DIR}/res $<TARGET_FILE_DIR:bmod>/res)
 
 install(TARGETS bmod DESTINATION bin)
-install(DIRECTORY res DESTINATION share/bmod)
+install(DIRECTORY res/ DESTINATION share/bmod)

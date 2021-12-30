@@ -10,29 +10,25 @@
 
 const char *LOG_NAME = ".bmod.log";
 
-const char *RES_DIR1 = "res";
-const char *RES_DIR2 = "/usr/local/share/bmod";
-const char *RES_DIR3 = "/usr/share/bmod";
+const char *INSTALL_RESOURCE_DIR = "/usr/local/share/bmod";
+const char *DEBUG_RESOURCE_DIR = "res";
 
 int main(int argc, char *argv[])
 {
 
+	// intialise logger
 	char log_path[FILENAME_MAX] = { 0 };
 	snprintf(log_path, FILENAME_MAX-1, "%s/%s", getenv("HOME"), LOG_NAME);
 	log_init(log_path);
-//	log_init("/root/log");
 
-	// check if res/ exists in current working dir
+	// check if res/ exists
 	struct stat sb;
-	if(stat(RES_DIR1, &sb) == 0 && S_ISDIR(sb.st_mode)) {
+	if( stat(DEBUG_RESOURCE_DIR, &sb) == 0 && S_ISDIR(sb.st_mode)) {
 		// use res/
-		// already in correct dir
-	} else if (stat(RES_DIR2, &sb) == 0 && S_ISDIR(sb.st_mode)) {
-		// use /usr/local/share/bmod
-		chdir(RES_DIR2);
+		chdir(DEBUG_RESOURCE_DIR);
 	} else {
-		// use /usr/share/bmod
-		chdir(RES_DIR3);
+		// use /usr/local/share/bmod
+		chdir(INSTALL_RESOURCE_DIR);
 	}
 
 	struct Game g;

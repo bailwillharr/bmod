@@ -56,8 +56,8 @@ GLuint shader_create(const char *name)
 {
 	char path_vs[128] = { 0 };
 	char path_fs[128] = { 0 };
-	snprintf(path_vs, 127, "res/shaders/%s.vert", name);
-	snprintf(path_fs, 127, "res/shaders/%s.frag", name);
+	snprintf(path_vs, 127, "shaders/%s.vert", name);
+	snprintf(path_fs, 127, "shaders/%s.frag", name);
 
     GLuint vs = compile(path_vs, GL_VERTEX_SHADER);
     GLuint fs = compile(path_fs, GL_FRAGMENT_SHADER);
