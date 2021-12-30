@@ -235,7 +235,8 @@ int window_create(struct Window *win)
 	glfwSetKeyCallback(win->handle, cb_key);
 	glfwSetJoystickCallback(cb_joystick);
 
-	glfwSwapInterval(1);
+	glfwSwapInterval(0);
+	//glfwSwapInterval(1);
 
 	return 0;
 

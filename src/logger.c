@@ -20,8 +20,10 @@ static void log_msg(const char * type, const char *format, va_list old_args)
 		fprintf(stderr, "[%lf] [%s] ", time, type);
 	}
 
-	va_copy(args, old_args);
-	vfprintf(logger_out, format, args); // write to file
+	if (logger_out != NULL) {
+		va_copy(args, old_args);
+		vfprintf(logger_out, format, args); // write to file
+	}
 	va_copy(args, old_args);
 	vfprintf(stderr, format, args); // write to console
 
@@ -37,6 +39,9 @@ void log_init(const char *path)
 		fclose(logger_out);
 	}
 	logger_out = fopen(path, "w");
+	if (logger_out == NULL) {
+		fprintf(stderr, "unable to open log file for writing\n");
+	}
 }
 
 void log_destroy()
