@@ -3,7 +3,7 @@ set(CMAKE_CXX_STANDARD 17)
 set(CMAKE_CXX_STANDARD_REQUIRED ON)
 
 project(bmod VERSION 1.0)
-add_executable(bmod src/main.c src/game.c src/window.c src/logger.c src/glad/glad.c src/render/renderer.c src/render/shader.c src/render/camera.c)
+add_executable(bmod src/main.c src/game.c src/window.c src/logger.c src/game_input.c src/glad/glad.c src/render/renderer.c src/render/shader.c src/render/camera.c)
 
 find_library(GLFW glfw)
 target_link_libraries(bmod PUBLIC ${GLFW} m dl)

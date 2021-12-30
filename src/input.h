@@ -29,6 +29,4 @@ struct Input { // keyboard/controller agnostic input states
 
 };
 
-void input_prepare(struct Input *input);
-
 #endif
