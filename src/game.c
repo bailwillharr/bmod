@@ -11,6 +11,7 @@
 #include "window.h"
 #include "render/renderer.h"
 #include "game_input.h"
+#include "game_camera.h"
 
 int game_create(struct Game * g)
 {
@@ -37,10 +38,8 @@ int game_loop(struct Game * g)
 		double frameDelta = now - lastFrame;
 		lastFrame = now;
 		if (now - lastSecond > 1.0) {
-
 			// runs every second
 			log_log("FPS: %d\n", frames);
-
 			frames = 0;
 			lastSecond = now;
 		}
@@ -61,36 +60,13 @@ int game_loop(struct Game * g)
 		}
 
 
-
-	vec3 dxRotated = {g->input.moveDX * frameDelta * 60.0f, 0.0f, 0.0f};
-    glm_vec3_rotate(dxRotated, g->ren.cam.rot[1], GLM_YUP);
-    vec3 dzRotated = {0.0f, 0.0f, g->input.moveDY * frameDelta * 60.0f};
-    glm_vec3_rotate(dzRotated, g->ren.cam.rot[1], GLM_YUP);
-
-	vec3 oldCameraPos;
-	glm_vec3_copy(g->ren.cam.pos, oldCameraPos);
-
-    glm_vec3_add(g->ren.cam.pos, dxRotated, g->ren.cam.pos);
-    glm_vec3_add(g->ren.cam.pos, dzRotated, g->ren.cam.pos);
-
-    // ascend / descend
-    g->ren.cam.pos[1] += (g->input.buttons[INPUT_BUTTON_JUMP] ? 10.0f : 0.0f) * frameDelta;
-    g->ren.cam.pos[1] += (g->input.buttons[INPUT_BUTTON_CROUCH] ? -10.0f : 0.0f) * frameDelta;
-
-    float rotDX = (float)g->input.lookAxisDY * -0.3f * frameDelta;
-    g->ren.cam.rot[0] += rotDX;
-    if (g->ren.cam.rot[0] >= GLM_PI_2 || g->ren.cam.rot[0] <= -GLM_PI_2) {
-        g->ren.cam.rot[0] -= rotDX;
-    }
-    g->ren.cam.rot[1] += (float)g->input.lookAxisDX * -0.3f * frameDelta;
-
-
+		game_camera_update(g, frameDelta);
 
 		// render
 		frames++;
 		renderer_prepare(&g->ren);
 
-		float vertices[] = {
+/*		float vertices[] = {
 			2.5,	-1.0,	-5.0,	1.0, 0.0, 0.0,
 			3.0,	-1.0,	-5.0,	0.0, 1.0, 0.0,
 			2.5,	-0.5,	-5.0,	0.0, 0.0, 1.0,
@@ -117,6 +93,7 @@ int game_loop(struct Game * g)
 		glVertexAttribPointer(attr_col, 3, GL_FLOAT, GL_FALSE, 6 * sizeof(float), (void *)(3 * sizeof(float)));
 		glUseProgram(g->ren.shaders[SHADER_TEXTURE]);
 		glDrawArrays(GL_TRIANGLES, 0, 6);
+*/
 
 		glfwSwapBuffers(g->win.handle);
 

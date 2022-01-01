@@ -36,6 +36,7 @@ struct Window {
 	int width, height;
 	GLFWmonitor *mon;
 	bool isFullscreen;
+	int swapInterval;
 
 	struct Keyboard keyboard;
 	struct Mouse mouse;
