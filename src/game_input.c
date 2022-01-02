@@ -15,7 +15,7 @@ void game_input_handleKeyboard(struct Game * g)
 		{INPUT_BUTTON_CROUCH, GLFW_KEY_LEFT_SHIFT},
 	};
 
-	for (int i = 0; i < sizeof(map) / sizeof(map[0]); i++) {
+	for (int i = 0; i < (int)(sizeof(map) / sizeof(map[0])); i++) {
 		g->input.buttons[map[i].out] = g->win.keyboard.keys[map[i].in];
 		g->input.deltas[map[i].out] = g->win.keyboard.deltas[map[i].in];
 	}
@@ -40,7 +40,7 @@ void game_input_handleGamepad(struct Game * g)
 		{INPUT_BUTTON_CROUCH, GLFW_GAMEPAD_BUTTON_B},
 	};
 
-	for (int i = 0; i < sizeof(map) / sizeof(map[0]); i++) {
+	for (int i = 0; i < (int)(sizeof(map) / sizeof(map[0])); i++) {
 		g->input.buttons[map[i].out] = g->win.gamepad.state.buttons[map[i].in];
 		g->input.deltas[map[i].out] = g->win.gamepad.deltas[map[i].in];
 	}
