@@ -8,12 +8,14 @@
 #include "util.h"
 #include "game.h"
 
+#include "config.h"
+
 const char *LOG_NAME = ".bmod.log";
 
 const char *INSTALL_RESOURCE_DIR = "/usr/local/share/bmod";
 const char *DEBUG_RESOURCE_DIR = "res";
 
-int main(int argc, char *argv[])
+int main()
 {
 
 	// intialise logger
@@ -39,6 +41,8 @@ int main(int argc, char *argv[])
 		log_destroy();
 		return EXIT_FAILURE;
 	}
+
+	log_log("bmod v%d.%d\n", BMOD_VERSION_MAJOR, BMOD_VERSION_MINOR);
 
 	if (game_loop(&g) != 0) {
 		log_log("Error in 'game_loop'\n");
