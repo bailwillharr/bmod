@@ -14,8 +14,11 @@ add_executable(bmod src/main.c src/game.c src/window.c src/logger.c src/game_inp
 configure_file(config.h.in config.h)
 target_include_directories(bmod PUBLIC ${PROJECT_BINARY_DIR})
 
-find_library(GLFW glfw)
-target_link_libraries(bmod PUBLIC ${GLFW} m dl)
+if (NOT MINGW)
+	target_link_libraries(bmod PUBLIC ld)
+endif()
+
+target_link_libraries(bmod PUBLIC glfw3 m)
 
 add_custom_command(
 	TARGET bmod POST_BUILD

@@ -33,7 +33,7 @@ static void log_msg(const char * type, const char *format, va_list old_args)
 
 bool logger_isTimeAvailable = false;
 
-void log_init(const char *path)
+int log_init(const char *path)
 {
 	if (logger_out != NULL) {
 		fclose(logger_out);
@@ -41,7 +41,9 @@ void log_init(const char *path)
 	logger_out = fopen(path, "w");
 	if (logger_out == NULL) {
 		fprintf(stderr, "unable to open log file for writing\n");
+		return -1;
 	}
+	return 0;
 }
 
 void log_destroy()

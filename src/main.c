@@ -20,8 +20,18 @@ int main()
 
 	// intialise logger
 	char log_path[FILENAME_MAX] = { 0 };
+#ifdef NDEBUG
+	#ifdef _WIN32
+	snprintf(log_path, FILENAME_MAX-1, "C:%s\\%s", getenv("HOMEPATH"), LOG_NAME);
+	printf("%s\n", log_path);
+	#else
 	snprintf(log_path, FILENAME_MAX-1, "%s/%s", getenv("HOME"), LOG_NAME);
-	log_init(log_path);
+	#endif
+#else
+	snprintf(log_path, FILENAME_MAX-1, "%s", LOG_NAME);
+#endif
+	
+	if (log_init(log_path) != 0) return EXIT_FAILURE;
 
 	// check if res/ exists
 	struct stat sb;

@@ -6,7 +6,7 @@
 
 extern bool logger_isTimeAvailable;
 
-void log_init(const char *path);
+int log_init(const char *path);
 void log_destroy();
 
 void log_log(const char *format, ...);
