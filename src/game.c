@@ -20,6 +20,19 @@ int game_create(struct Game * g)
 	
 	memset(g->input.buttons, false, sizeof(bool) * INPUT_BUTTON_COUNT);
 
+	struct WorldObject *car = object_create_sibling(NULL, "car");
+		struct WorldObject *engine = object_create_child(car, "engine");
+			struct WorldObject *piston = object_create_child(engine, "piston");
+		struct WorldObject *wheels = object_create_child(car, "wheels");
+		struct WorldObject *chassis = object_create_child(car, "chassis");
+
+	object_print_hier(car);
+
+	object_destroy(engine);
+	object_destroy(wheels);
+
+	object_print_hier(car);
+
 	return 0;
 }
 

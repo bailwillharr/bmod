@@ -1,5 +1,5 @@
-#ifndef CAMERA_H
-#define CAMERA_H
+#ifndef RENDER_CAMERA_H
+#define RENDER_CAMERA_H
 
 #include <cglm/cglm.h>
 

@@ -9,7 +9,7 @@ add_compile_options(-Wall -Wextra
 	)
 
 project(bmod VERSION 1.0)
-add_executable(bmod src/main.c src/game.c src/window.c src/logger.c src/game_input.c src/game_camera.c src/glad/glad.c src/render/renderer.c src/render/shader.c src/render/camera.c)
+add_executable(bmod src/main.c src/game.c src/window.c src/logger.c src/game_input.c src/game_camera.c src/glad/glad.c src/render/renderer.c src/render/shader.c src/render/camera.c src/object/object.c)
 
 configure_file(config.h.in config.h)
 target_include_directories(bmod PUBLIC ${PROJECT_BINARY_DIR})

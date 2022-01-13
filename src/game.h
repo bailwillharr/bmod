@@ -4,11 +4,14 @@
 #include "window.h"
 #include "render/renderer.h"
 #include "input.h"
+#include "object/object.h"
 
 struct Game {
 	struct Window win;
 	struct Renderer ren;
 	struct Input input;
+
+    struct WorldObject *object_head;
 };
 
 int game_create(struct Game * g);

@@ -1,5 +1,5 @@
-#ifndef RENDERER_H
-#define RENDERER_H
+#ifndef RENDER_RENDERER_H
+#define RENDER_RENDERER_H
 
 #include "camera.h"
 #include "../glad/glad.h"
