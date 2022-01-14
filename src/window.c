@@ -281,7 +281,8 @@ int window_prepare_input(struct Window *win)
 
 void window_destroy(struct Window *win)
 {
+	log_log("destroying window\n");
 	glfwDestroyWindow(win->handle);
+	log_log("window destroyed\n");
 	glfwTerminate();
-
 }

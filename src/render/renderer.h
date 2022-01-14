@@ -2,7 +2,7 @@
 #define RENDER_RENDERER_H
 
 #include "camera.h"
-#include "../glad/glad.h"
+#include <glad/glad.h>
 
 enum Shaders {
 	SHADER_TEXTURE = 0,

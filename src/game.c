@@ -1,7 +1,7 @@
 #include <stdio.h>
 #include <string.h>
 
-#include "glad/glad.h"
+#include <glad/glad.h>
 #define GLFW_INCLUDE_NONE
 #include <GLFW/glfw3.h>
 
@@ -20,9 +20,10 @@ int game_create(struct Game * g)
 	
 	memset(g->input.buttons, false, sizeof(bool) * INPUT_BUTTON_COUNT);
 
-	
+	// initiliase world objects
 
-	object_print_hier(g->obj_root);
+
+	//object_print_hier(g->obj_root);
 
 	return 0;
 }
@@ -62,7 +63,12 @@ int game_loop(struct Game * g)
 		if (g->input.deltas[INPUT_BUTTON_QUIT] == BUTTON_PRESSED) {
 			glfwSetWindowShouldClose(g->win.handle, GLFW_TRUE);
 		}
-
+		if (g->win.keyboard.deltas[GLFW_KEY_O] == BUTTON_PRESSED) {
+			glfwSetInputMode(g->win.handle, GLFW_CURSOR, GLFW_CURSOR_NORMAL);
+		}
+		if (g->win.keyboard.deltas[GLFW_KEY_I] == BUTTON_PRESSED) {
+			glfwSetInputMode(g->win.handle, GLFW_CURSOR, GLFW_CURSOR_DISABLED);
+		}
 
 		game_camera_update(g, frameDelta);
 
@@ -70,7 +76,7 @@ int game_loop(struct Game * g)
 		frames++;
 		renderer_prepare(&g->ren);
 
-/*		float vertices[] = {
+		float vertices[] = {
 			2.5,	-1.0,	-5.0,	1.0, 0.0, 0.0,
 			3.0,	-1.0,	-5.0,	0.0, 1.0, 0.0,
 			2.5,	-0.5,	-5.0,	0.0, 0.0, 1.0,
@@ -97,7 +103,6 @@ int game_loop(struct Game * g)
 		glVertexAttribPointer(attr_col, 3, GL_FLOAT, GL_FALSE, 6 * sizeof(float), (void *)(3 * sizeof(float)));
 		glUseProgram(g->ren.shaders[SHADER_TEXTURE]);
 		glDrawArrays(GL_TRIANGLES, 0, 6);
-*/
 
 		glfwSwapBuffers(g->win.handle);
 

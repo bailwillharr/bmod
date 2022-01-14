@@ -9,16 +9,19 @@ add_compile_options(-Wall -Wextra
 	)
 
 project(bmod VERSION 1.0)
-add_executable(bmod src/main.c src/game.c src/window.c src/logger.c src/game_input.c src/game_camera.c src/glad/glad.c src/render/renderer.c src/render/shader.c src/render/camera.c src/object/object.c)
+add_executable(bmod src/main.c src/game.c src/window.c src/logger.c src/game_input.c src/game_camera.c src/render/renderer.c src/render/shader.c src/render/camera.c src/object/object.c)
 
 configure_file(config.h.in config.h)
-target_include_directories(bmod PUBLIC ${PROJECT_BINARY_DIR})
+target_include_directories(bmod PRIVATE ${PROJECT_BINARY_DIR})
+
+add_subdirectory(glad)
+target_link_libraries(bmod PRIVATE glad)
 
 if (NOT MINGW)
-	target_link_libraries(bmod PUBLIC ld)
+	target_link_libraries(bmod PRIVATE ld)
 endif()
 
-target_link_libraries(bmod PUBLIC glfw3 m)
+target_link_libraries(bmod PRIVATE glfw3 m)
 
 add_custom_command(
 	TARGET bmod POST_BUILD
