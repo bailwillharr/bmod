@@ -1,7 +1,7 @@
 #ifndef OBJECT_COMPONENT_H
 #define OBJECT_COMPONENT_H
 
-enum ObjectComponentType {
+enum ObjectComponentTypes {
     COMPONENT_MESH,
     COMPONENT_MESH_RENDERER,
     COMPONENT_LIGHT,
@@ -9,10 +9,14 @@ enum ObjectComponentType {
 
 // generic object component, to be overloaded
 struct ObjectComponent {
-    enum ObjectComponentType type;
+    enum ObjectComponentTypes type;
     void *data; // casted to specific component struct, e.g. (struct LightComponent *)
-    //void * (*init)(); // set to specific component init function, e.g. struct LightComponent * init()
-    //void (*destroy)(void *); // set to specific component destroy function, e.g. void destroy(struct LightComponent *)
+
+    struct ObjectComponent *next;
+    struct ObjectComponent *prev;
 };
+
+struct ObjectComponent *component_create(struct ObjectComponent *prev);
+void component_destroy(struct ObjectComponent *comp);
 
 #endif

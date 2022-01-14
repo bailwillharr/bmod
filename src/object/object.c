@@ -34,6 +34,7 @@ struct WorldObject *object_create_sibling(struct WorldObject *prev, const char *
     return new;
 
 }
+
 // The parent object doesn't need to be childless for this to succeed.
 struct WorldObject *object_create_child(struct WorldObject *parent, const char *name)
 {
