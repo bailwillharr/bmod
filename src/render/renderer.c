@@ -8,7 +8,8 @@
 
 // extern constants
 const char *SHADER_NAMES[] = {
-	"texture"
+	"texture",
+	"test"
 };
 
 static void uniform_to_all_shaders(GLuint *shaders, const char *u, mat4 mat)
@@ -27,7 +28,7 @@ int renderer_create(struct Renderer *ren, float aspect, float fov)
 		ren->shaders[i] = shader_create(SHADER_NAMES[i]);
 	}
 
-	camera_init(&ren->cam, aspect, fov);
+	camera_init(&ren->cam, aspect, fov, (vec3){ 0.0, 0.0, 0.0 }, (vec2){ 0.0, 0.0 });
 	uniform_to_all_shaders(ren->shaders, "p", ren->cam.p);
 
 	glEnable(GL_DEPTH_TEST);
@@ -50,4 +51,12 @@ void renderer_destroy(struct Renderer *ren)
 	for (int i = 0; i < SHADER_COUNT; i++) {
 		shader_destroy(ren->shaders[i]);
 	}
+}
+
+
+void renderer_on_window_resize(struct Renderer *ren, int width, int height)
+{
+	// re-initialise camera with new aspect ratio
+	camera_init(&ren->cam, (float)width / (float)height, ren->cam.fov, ren->cam.pos, ren->cam.rot);
+	uniform_to_all_shaders(ren->shaders, "p", ren->cam.p);
 }

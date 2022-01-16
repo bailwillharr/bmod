@@ -11,7 +11,7 @@ struct Camera {
 	vec3 pos;
 };
 
-void camera_init(struct Camera *cam, float aspect, float fov);
+void camera_init(struct Camera *cam, float aspect, float fov, vec3 pos, vec2 rot);
 void camera_update(struct Camera *cam);
 
 #endif

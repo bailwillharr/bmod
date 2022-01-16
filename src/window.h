@@ -38,6 +38,8 @@ struct Window {
 	bool isFullscreen;
 	int swapInterval;
 
+	bool resizedFlag; // set to true if window was just resized
+
 	struct Keyboard keyboard;
 	struct Mouse mouse;
 	struct Gamepad gamepad;

@@ -69,21 +69,25 @@ int game_loop(struct Game * g)
 		if (g->win.keyboard.deltas[GLFW_KEY_I] == BUTTON_PRESSED) {
 			glfwSetInputMode(g->win.handle, GLFW_CURSOR, GLFW_CURSOR_DISABLED);
 		}
+		if (g->win.keyboard.deltas[GLFW_KEY_V] == BUTTON_PRESSED) {
+			g->win.swapInterval = !g->win.swapInterval;
+			glfwSwapInterval(g->win.swapInterval);
+		}
 
+		if (g->win.resizedFlag == true) {
+			renderer_on_window_resize(&g->ren, g->win.width, g->win.height);
+			g->win.resizedFlag = false;
+		}
 		game_camera_update(g, frameDelta);
 
 		// render
 		frames++;
 		renderer_prepare(&g->ren);
-
+		
 		float vertices[] = {
-			2.5,	-1.0,	-5.0,	1.0, 0.0, 0.0,
-			3.0,	-1.0,	-5.0,	0.0, 1.0, 0.0,
-			2.5,	-0.5,	-5.0,	0.0, 0.0, 1.0,
-
-			2.5,	-0.5,	-5.0,	0.0, 0.0, 1.0,
-			3.0,	-1.0,	-5.0,	0.0, 1.0, 0.0,
-			3.0,	-0.5,	-5.0,	1.0, 1.0, 1.0
+			0.0,	0.0,	-1.0,
+			0.0,	0.5,	-1.0,
+			0.5,	0.0,	-1.0
 		};
 
 		GLuint vao;
@@ -92,17 +96,18 @@ int game_loop(struct Game * g)
 		GLuint vbo;
 		glGenBuffers(1, &vbo);
 		glBindBuffer(GL_ARRAY_BUFFER, vbo);
-		glBufferData(GL_ARRAY_BUFFER, 6 * 6 * sizeof(float), (void *)vertices, GL_STATIC_DRAW);
+		glBufferData(GL_ARRAY_BUFFER, 3 * 3 * sizeof(float), (void *)vertices, GL_STATIC_DRAW);
 
-		GLuint attr_pos = glGetAttribLocation(g->ren.shaders[SHADER_TEXTURE], "aPosition");
-		GLuint attr_col = glGetAttribLocation(g->ren.shaders[SHADER_TEXTURE], "aColor");
+		GLuint attr_pos = glGetAttribLocation(g->ren.shaders[SHADER_TEST], "aPosition");
 
 		glEnableVertexAttribArray(attr_pos);
-		glVertexAttribPointer(attr_pos, 3, GL_FLOAT, GL_FALSE, 6 * sizeof(float), (void *)(0 * sizeof(float)));
-		glEnableVertexAttribArray(attr_col);
-		glVertexAttribPointer(attr_col, 3, GL_FLOAT, GL_FALSE, 6 * sizeof(float), (void *)(3 * sizeof(float)));
-		glUseProgram(g->ren.shaders[SHADER_TEXTURE]);
-		glDrawArrays(GL_TRIANGLES, 0, 6);
+		glVertexAttribPointer(attr_pos, 3, GL_FLOAT, GL_FALSE, 3 * sizeof(float), (void *)(0 * sizeof(float)));
+		glUseProgram(g->ren.shaders[SHADER_TEST]);
+		glDrawArrays(GL_TRIANGLES, 0, 3);
+
+		glDisableVertexAttribArray(attr_pos);
+		glDeleteBuffers(1, &vbo);
+		glDeleteVertexArrays(1, &vao);
 
 		glfwSwapBuffers(g->win.handle);
 

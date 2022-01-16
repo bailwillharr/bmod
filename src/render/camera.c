@@ -18,18 +18,14 @@ static void gen_view_matrix(struct Camera *cam)
 	glm_look(cam->pos, direction, GLM_YUP, cam->v);
 }
 
-void camera_init(struct Camera *cam, float aspect, float fov)
+void camera_init(struct Camera *cam, float aspect, float fov, vec3 pos, vec2 rot)
 {
 	cam->aspect = aspect;
 	cam->fov = fov;
 
-	cam->pos[0] = 0.0f;
-	cam->pos[1] = 1.2f;
-	cam->pos[2] = 5.0f;
-
-	cam->rot[0] = 0.0f;
-	cam->rot[1] = 0.0f;
-
+	glm_vec3_copy(pos, cam->pos);
+	glm_vec2_copy(rot, cam->rot);
+	
 	gen_proj_matrix(cam);
 }
 

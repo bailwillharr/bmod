@@ -9,6 +9,8 @@
 #include "logger.h"
 #include "util.h"
 
+#include "render/renderer.h"
+
 #include "window.h"
 
 #define TITLE "bmod"
@@ -25,6 +27,7 @@ static void cb_framebuffer_size(GLFWwindow *handle, int newWidth, int newHeight)
 	win->width = newWidth;
 	win->height = newHeight;
 	glViewport(0, 0, newWidth, newHeight);
+	win->resizedFlag = true;
 }
 
 // mouse callbacks
@@ -221,18 +224,21 @@ int window_create(struct Window *win)
 		}
 	}
 
-	ASSERT(window_prepare_input(win))
+	/* EVENT CALLBACKS */
+
+	// screen resolution change
+	win->resizedFlag = false;
+	glfwSetFramebufferSizeCallback(win->handle, cb_framebuffer_size);
+
+	// mouse & keyboard
 	memset(win->keyboard.keys, 0, sizeof(bool) * GLFW_KEY_LAST);
 	memset(win->mouse.buttons, 0, sizeof(bool) * GLFW_MOUSE_BUTTON_LAST);
-
-	/* EVENT CALLBACKS */
-	// screen resolution change
-	glfwSetFramebufferSizeCallback(win->handle, cb_framebuffer_size);
-	// mouse & keyboard
 	glfwSetCursorPosCallback(win->handle, cb_cursor_pos);
 	glfwSetMouseButtonCallback(win->handle, cb_mouse_button);
 	glfwSetScrollCallback(win->handle, cb_scroll);
 	glfwSetKeyCallback(win->handle, cb_key);
+
+	// game controller
 	glfwSetJoystickCallback(cb_joystick);
 
 	win->swapInterval = 0;
