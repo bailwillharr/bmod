@@ -63,6 +63,7 @@ int main()
 	game_destroy(&g);
 
 	log_destroy();
+
 	return EXIT_SUCCESS;
 
 }

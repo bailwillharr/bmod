@@ -1,22 +1,25 @@
 #ifndef OBJECT_COMPONENT_H
 #define OBJECT_COMPONENT_H
 
-enum ObjectComponentTypes {
+enum GameComponentType {
     COMPONENT_MESH,
     COMPONENT_MESH_RENDERER,
     COMPONENT_LIGHT,
 };
 
 // generic object component, to be overloaded
-struct ObjectComponent {
-    enum ObjectComponentTypes type;
+struct GameComponent {
+    enum GameComponentType type;
     void *data; // casted to specific component struct, e.g. (struct LightComponent *)
 
-    struct ObjectComponent *next;
-    struct ObjectComponent *prev;
+    struct GameComponent *next;
+    struct GameComponent *prev;
+    struct GameObject *object;
 };
 
-struct ObjectComponent *component_create(struct ObjectComponent *prev);
-void component_destroy(struct ObjectComponent *comp);
+// if NULL, this creates a new component list
+struct GameComponent *component_create(struct GameObject *object);
+// Returns a pointer to whatever was to the right of this component.
+struct GameComponent *component_destroy(struct GameComponent *comp);
 
 #endif

@@ -13,9 +13,9 @@
 
 #include "window.h"
 
-#define TITLE "bmod"
-#define WINDOWED_WIDTH 640
-#define WINDOWED_HEIGHT 480
+static const char *TITLE = "bmod";
+static const int WINDOWED_WIDTH = 640;
+static const int WINDOWED_HEIGHT = 480;
 
 
 
@@ -243,6 +243,8 @@ int window_create(struct Window *win)
 
 	win->swapInterval = 0;
 	glfwSwapInterval(win->swapInterval);
+
+	window_prepare_input(win);
 
 	return 0;
 

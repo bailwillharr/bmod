@@ -10,31 +10,35 @@ struct ObjectTransform {
     vec3 scale;
 };
 
-// world object
+// game object
 // functions as a doubly-linked list
-struct WorldObject {
+struct GameObject {
     const char *name;
 
-    struct ObjectTransform transform; // all objects have a transform component
-    struct ObjectComponent *component_head; // also a doubly-linked list
+    // all objects have a transform component
+    struct ObjectTransform transform;
+    // left-most of component list
+    struct GameComponent *component_head;
     
-    struct WorldObject *child; // child is left-most of a new linked-list
-    struct WorldObject *parent;
+    // child is left-most of a new linked-list
+    struct GameObject *child;
+    struct GameObject *parent;
 
-    struct WorldObject *next;
-    struct WorldObject *prev; // if NULL, object is left-most of siblings
+    struct GameObject *next;
+    // if NULL, object is left-most of siblings
+    struct GameObject *prev;
 };
 
 // If NULL, this creates an entirely new hierarchy.
-struct WorldObject *object_create_sibling(struct WorldObject *prev, const char *name);
+struct GameObject *object_create_sibling(struct GameObject *prev, const char *name);
 // The parent object doesn't need to be childless for this to succeed.
-struct WorldObject *object_create_child(struct WorldObject *parent, const char *name);
+struct GameObject *object_create_child(struct GameObject *parent, const char *name);
 
 // Destroy a World Object, recursively destroying all its children, grandchildren, etc.
 // Returns a pointer to whatever was to the right of this object
-struct WorldObject *object_destroy(struct WorldObject *obj);
+struct GameObject *object_destroy(struct GameObject *obj);
 
 // Print a list of all objects ('root' being top-left in hierarchy)
-void object_print_hier(struct WorldObject *root);
+void object_print_hier(struct GameObject *root);
 
 #endif

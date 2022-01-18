@@ -11,7 +11,7 @@ struct Game {
 	struct Renderer ren;
 	struct Input input;
 
-    struct WorldObject *obj_root;
+    struct GameObject *obj_root;
 };
 
 int game_create(struct Game * g);

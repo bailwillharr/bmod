@@ -1,5 +1,6 @@
 #include <glad/glad.h>
 
+#include "../logger.h"
 #include "../game.h"
 #include "shader.h"
 #include "camera.h"
@@ -26,6 +27,7 @@ int renderer_create(struct Renderer *ren, float aspect, float fov)
 	// load shaders
 	for (int i = 0; i < SHADER_COUNT; i++) {
 		ren->shaders[i] = shader_create(SHADER_NAMES[i]);
+		log_log("shader '%s' loaded\n", SHADER_NAMES[i]);
 	}
 
 	camera_init(&ren->cam, aspect, fov, (vec3){ 0.0, 0.0, 0.0 }, (vec2){ 0.0, 0.0 });

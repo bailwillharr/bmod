@@ -13,6 +13,7 @@
 #include "game_input.h"
 #include "game_camera.h"
 
+/*
 struct MeshVertex {
 	float x, y, z;
 	float nx, ny, nz;
@@ -30,6 +31,13 @@ struct MeshFileHeader {
 struct MeshVertex *gun_vertices;
 unsigned int *gun_indices;
 unsigned int gun_texture;
+unsigned int vao, vbo, ebo;
+*/
+
+static struct GameObject *createObjects()
+{
+	struct GameObject *root = object_create_sibling(NULL, "root");
+}
 
 int game_create(struct Game * g)
 {
@@ -38,6 +46,9 @@ int game_create(struct Game * g)
 	
 	memset(g->input.buttons, false, sizeof(bool) * INPUT_BUTTON_COUNT);
 
+	g->obj_root = createObjects();
+
+/*
 	// initiliase world objects
 
 	//object_print_hier(g->obj_root);
@@ -75,10 +86,8 @@ int game_create(struct Game * g)
 	uint64_t end = ftell(fp);
 
 	uint8_t *texbuf = malloc(end); // allocated a little too much here but it works
-	fseek(fp, 0x09+tex_data_offset, SEEK_SET);
+	fseek(fp, tex_data_offset, SEEK_SET);
 	fread(texbuf, 1, end, fp);
-
-	printf("end: %llu, ftell: %lld\n", end, ftell(fp));
 
 	glTexImage2D(GL_TEXTURE_2D, 0, GL_RGB, 4096, 4096, 0, GL_RGB, GL_UNSIGNED_BYTE, texbuf);
 
@@ -86,6 +95,25 @@ int game_create(struct Game * g)
 	fclose(fp);
 
 	glGenerateMipmap(GL_TEXTURE_2D);
+
+	glGenVertexArrays(1, &vao);
+	glBindVertexArray(vao);
+	glGenBuffers(1, &vbo);
+	glGenBuffers(1, &ebo);
+	glBindBuffer(GL_ARRAY_BUFFER, vbo);
+	glBufferData(GL_ARRAY_BUFFER, sizeof(struct MeshVertex) * header.vertex_count, &gun_vertices[0], GL_STATIC_DRAW);
+	free(gun_vertices);
+	glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, ebo);
+	glBufferData(GL_ELEMENT_ARRAY_BUFFER, sizeof(unsigned int) * header.index_count, &gun_indices[0], GL_STATIC_DRAW);
+	free(gun_indices);
+	glEnableVertexAttribArray(glGetAttribLocation(g->ren.shaders[SHADER_TEST], "aPosition"));
+	glEnableVertexAttribArray(glGetAttribLocation(g->ren.shaders[SHADER_TEST], "aNormal"));
+	glEnableVertexAttribArray(glGetAttribLocation(g->ren.shaders[SHADER_TEST], "aUV"));
+	glVertexAttribPointer(glGetAttribLocation(g->ren.shaders[SHADER_TEST], "aPosition"), 3, GL_FLOAT, GL_FALSE, 8 * sizeof(float), (void *)offsetof(struct MeshVertex, x));
+	glVertexAttribPointer(glGetAttribLocation(g->ren.shaders[SHADER_TEST], "aNormal"), 3, GL_FLOAT, GL_FALSE, 8 * sizeof(float), (void *)offsetof(struct MeshVertex, nx));
+	glVertexAttribPointer(glGetAttribLocation(g->ren.shaders[SHADER_TEST], "aUV"), 2, GL_FLOAT, GL_FALSE, 8 * sizeof(float), (void *)offsetof(struct MeshVertex, u));
+	glBindVertexArray(0);
+*/
 
 	return 0;
 }
@@ -145,36 +173,6 @@ int game_loop(struct Game * g)
 		// render
 		frames++;
 		renderer_prepare(&g->ren);
-
-		GLuint vao;
-		glGenVertexArrays(1, &vao);
-		glBindVertexArray(vao);
-		GLuint vbo;
-		glGenBuffers(1, &vbo);
-		GLuint ebo;
-		glGenBuffers(1, &ebo);
-		glBindBuffer(GL_ARRAY_BUFFER, vbo);
-		glBufferData(GL_ARRAY_BUFFER, sizeof(struct MeshVertex) * header.vertex_count, &gun_vertices[0], GL_STATIC_DRAW);
-		glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, ebo);
-		glBufferData(GL_ELEMENT_ARRAY_BUFFER, sizeof(unsigned int) * header.index_count, &gun_indices[0], GL_STATIC_DRAW);
-
-		glEnableVertexAttribArray(glGetAttribLocation(g->ren.shaders[SHADER_TEST], "aPosition"));
-		glEnableVertexAttribArray(glGetAttribLocation(g->ren.shaders[SHADER_TEST], "aNormal"));
-		glEnableVertexAttribArray(glGetAttribLocation(g->ren.shaders[SHADER_TEST], "aUV"));
-
-		glVertexAttribPointer(glGetAttribLocation(g->ren.shaders[SHADER_TEST], "aPosition"), 3, GL_FLOAT, GL_FALSE, 8 * sizeof(float), (void *)offsetof(struct MeshVertex, x));
-		glVertexAttribPointer(glGetAttribLocation(g->ren.shaders[SHADER_TEST], "aNormal"), 3, GL_FLOAT, GL_FALSE, 8 * sizeof(float), (void *)offsetof(struct MeshVertex, nx));
-		glVertexAttribPointer(glGetAttribLocation(g->ren.shaders[SHADER_TEST], "aUV"), 2, GL_FLOAT, GL_FALSE, 8 * sizeof(float), (void *)offsetof(struct MeshVertex, u));
-
-		glActiveTexture(GL_TEXTURE0);
-		glBindTexture(GL_TEXTURE_2D, gun_texture);
-
-		glUseProgram(g->ren.shaders[SHADER_TEST]);
-		glDrawElements(GL_TRIANGLES, header.index_count, GL_UNSIGNED_INT, 0);
-
-		glDeleteBuffers(1, &vbo);
-		glDeleteBuffers(1, &ebo);
-		glDeleteVertexArrays(1, &vao);
 
 		glfwSwapBuffers(g->win.handle);
 

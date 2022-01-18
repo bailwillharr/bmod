@@ -3,7 +3,7 @@ set(CMAKE_C_STANDARD 99)
 set(CMAKE_C_STANDARD_REQUIRED ON)
 
 project(bmod VERSION 1.0)
-add_executable(bmod src/main.c src/game.c src/window.c src/logger.c src/game_input.c src/game_camera.c src/render/renderer.c src/render/shader.c src/render/camera.c src/object/object.c)
+add_executable(bmod src/main.c src/game.c src/window.c src/logger.c src/game_input.c src/game_camera.c src/render/renderer.c src/render/shader.c src/render/camera.c src/object/object.c src/object/component.c src/object/component/component_mesh.c src/object/component/component_mesh_renderer.c)
 
 add_subdirectory(modelconv)
 

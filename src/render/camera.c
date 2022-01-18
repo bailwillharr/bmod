@@ -2,7 +2,7 @@
 
 static void gen_proj_matrix(struct Camera *cam)
 {
-	const float CLIP_NEAR = 0.1f;
+	const float CLIP_NEAR = 1.0f;
 	const float CLIP_FAR = 500.0f;
 
 	float vertical_fov_rads = 2.0f * atanf( (1.0f / cam->aspect) * tanf(cam->fov * GLM_PI / 360.0f));

@@ -4,11 +4,24 @@
 
 #include "object.h"
 
+static void initObjectData(struct GameObject *obj)
+{
+    obj->transform.position[0] = 0.0f;
+    obj->transform.position[1] = 0.0f;
+    obj->transform.position[2] = 0.0f;
+    obj->transform.rotation[0] = 0.0f;
+    obj->transform.rotation[1] = 0.0f;
+    obj->transform.rotation[2] = 0.0f;
+    obj->transform.scale[0] = 1.0f;
+    obj->transform.scale[1] = 1.0f;
+    obj->transform.scale[2] = 1.0f;
+}
+
 // If NULL, this creates an entirely new hierarchy.
-struct WorldObject *object_create_sibling(struct WorldObject *prev, const char *name)
+struct GameObject *object_create_sibling(struct GameObject *prev, const char *name)
 {
 
-    struct WorldObject *new = calloc(1, sizeof(struct WorldObject));
+    struct GameObject *new = calloc(1, sizeof(struct GameObject));
     if (new == NULL) {
         log_error("calloc() failed for new object '%s'\n", name);
         return NULL;
@@ -31,18 +44,20 @@ struct WorldObject *object_create_sibling(struct WorldObject *prev, const char *
         new->next = NULL;
     }
 
+    initObjectData(new);
+
     return new;
 
 }
 
 // The parent object doesn't need to be childless for this to succeed.
-struct WorldObject *object_create_child(struct WorldObject *parent, const char *name)
+struct GameObject *object_create_child(struct GameObject *parent, const char *name)
 {
     if (parent == NULL) {
         return NULL;
     }
 
-    struct WorldObject *new = calloc(1, sizeof(struct WorldObject));
+    struct GameObject *new = calloc(1, sizeof(struct GameObject));
     if (new == NULL) {
         log_error("calloc() failed for new object '%s'\n", name);
         return NULL;
@@ -58,18 +73,20 @@ struct WorldObject *object_create_child(struct WorldObject *parent, const char *
         parent->child = new;
         new->prev = NULL;
     } else {
-        struct WorldObject *end; // end of children
+        struct GameObject *end; // end of children
         for (end = parent->child; end->next != NULL; end = end->next) ;
         new->prev = end;
         end->next = new;
     }
+
+    initObjectData(new);
 
     return new;
 }
 
 // Destroy a World Object, recursively destroying all its children, grandchildren, etc.
 // Returns a pointer to whatever was to the right of this object
-struct WorldObject *object_destroy(struct WorldObject *obj)
+struct GameObject *object_destroy(struct GameObject *obj)
 {
     while (obj->child != NULL) {
         // first delete all the object's children
@@ -90,19 +107,19 @@ struct WorldObject *object_destroy(struct WorldObject *obj)
     if (obj->prev != NULL) {
         obj->prev->next = obj->next;
     }
-    if (obj->next != NULL) {
+    if (obj->next != NULL) { 
         obj->next->prev = obj->prev;
     }
 
-    struct WorldObject *right = obj->next;
+    struct GameObject *right = obj->next;
     free(obj);
     return right;
     
 }
 
-static void print_level(struct WorldObject *left, int level)
+static void print_level(struct GameObject *left, int level)
 {
-    for (struct WorldObject *current = left; current != NULL; current = current->next) {
+    for (struct GameObject *current = left; current != NULL; current = current->next) {
         for (int i = 0; i < level; i++) {
             fprintf(stderr, "\t");
         }
@@ -113,7 +130,7 @@ static void print_level(struct WorldObject *left, int level)
     }
 }
 
-void object_print_hier(struct WorldObject *root)
+void object_print_hier(struct GameObject *root)
 {
     print_level(root, 0);
 }
