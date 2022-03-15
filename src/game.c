@@ -13,7 +13,6 @@
 #include "game_input.h"
 #include "game_camera.h"
 
-/*
 struct MeshVertex {
 	float x, y, z;
 	float nx, ny, nz;
@@ -32,7 +31,6 @@ struct MeshVertex *gun_vertices;
 unsigned int *gun_indices;
 unsigned int gun_texture;
 unsigned int vao, vbo, ebo;
-*/
 
 static struct GameObject *createObjects()
 {
@@ -48,7 +46,6 @@ int game_create(struct Game * g)
 
 	g->obj_root = createObjects();
 
-/*
 	// initiliase world objects
 
 	//object_print_hier(g->obj_root);
@@ -113,7 +110,6 @@ int game_create(struct Game * g)
 	glVertexAttribPointer(glGetAttribLocation(g->ren.shaders[SHADER_TEST], "aNormal"), 3, GL_FLOAT, GL_FALSE, 8 * sizeof(float), (void *)offsetof(struct MeshVertex, nx));
 	glVertexAttribPointer(glGetAttribLocation(g->ren.shaders[SHADER_TEST], "aUV"), 2, GL_FLOAT, GL_FALSE, 8 * sizeof(float), (void *)offsetof(struct MeshVertex, u));
 	glBindVertexArray(0);
-*/
 
 	return 0;
 }

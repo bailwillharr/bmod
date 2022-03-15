@@ -11,10 +11,16 @@ add_subdirectory(glad)
 target_link_libraries(bmod PRIVATE glad)
 
 if (NOT MINGW)
-	target_link_libraries(bmod PRIVATE ld)
+	target_link_libraries(bmod PRIVATE dl)
 endif()
 
-target_link_libraries(bmod PRIVATE glfw3 m)
+if (MINGW)
+	target_link_libraries(bmod PRIVATE glfw3)
+else()
+	target_link_libraries(bmod PRIVATE glfw)
+endif()
+
+target_link_libraries(bmod PRIVATE m)
 
 configure_file(config.h.in config.h)
 target_include_directories(bmod PRIVATE ${PROJECT_BINARY_DIR})

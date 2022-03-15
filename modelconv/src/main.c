@@ -56,7 +56,7 @@ int main(int argc, char *argv[])
 
     for (int i = 0; i < scene->mNumMeshes; i++) {
         char buf[256];
-        sprintf_s(buf, 255, "%s_%d.bmod_mesh", name, i);
+        snprintf(buf, 255, "%s_%d.bmod_mesh", name, i);
         fprintf(stderr, "mesh vertex count: %d\n", scene->mMeshes[i]->mNumVertices);
 
         FILE *fp = fopen(buf, "wb");
