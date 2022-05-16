@@ -121,6 +121,12 @@ int game_loop(struct Game * g)
 	double lastSecond = lastFrame;
 	int frames = 0;
 
+	g->ren.cam.pos[0] += 13.0f;
+	g->ren.cam.pos[1] += 12.0f;
+	g->ren.cam.pos[2] += 1.0f;
+	g->ren.cam.rot[0] -= 3.14159f / 8.0f;
+	g->ren.cam.rot[1] += 3.14159f / 2.0f;
+
 	while (!glfwWindowShouldClose(g->win.handle)) {
 
 		// logic
@@ -169,6 +175,9 @@ int game_loop(struct Game * g)
 		// render
 		frames++;
 		renderer_prepare(&g->ren);
+		glBindVertexArray(vao);
+		glUseProgram(g->ren.shaders[SHADER_TEST]);
+		glDrawElements(GL_TRIANGLES, header.index_count, GL_UNSIGNED_INT, 0);
 
 		glfwSwapBuffers(g->win.handle);
 
