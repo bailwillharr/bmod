@@ -33,7 +33,7 @@ struct GameComponent *component_mesh_renderer_create(struct GameObject *object)
 
 }
 
-struct GameComponent *component_mesh_renderer_destroy(struct GameComponent *comp)
+void component_mesh_renderer_destroy(struct GameComponent *comp)
 {
 	free(comp->data);
 	component_destroy(comp);

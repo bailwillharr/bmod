@@ -1,5 +1,4 @@
 #include <stdlib.h>
-
 #include "../../logger.h"
 #include "../component.h"
 
@@ -36,7 +35,7 @@ struct GameComponent *component_mesh_create(struct GameObject *object, struct Ga
 
 }
 
-struct GameComponent *component_mesh_destroy(struct GameComponent *comp)
+void component_mesh_destroy(struct GameComponent *comp)
 {
 	free(comp->data);
 	component_destroy(comp);

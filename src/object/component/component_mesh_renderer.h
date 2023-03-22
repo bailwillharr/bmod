@@ -9,6 +9,6 @@ struct ComponentMeshRenderer {
 };
 
 struct GameComponent *component_mesh_renderer_create(struct GameObject *object);
-struct GameComponent *component_mesh_renderer_destroy(struct GameComponent *comp);
+void component_mesh_renderer_destroy(struct GameComponent *comp);
 
 #endif

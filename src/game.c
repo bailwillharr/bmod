@@ -35,6 +35,7 @@ unsigned int vao, vbo, ebo;
 static struct GameObject *createObjects()
 {
 	struct GameObject *root = object_create_sibling(NULL, "root");
+	return root;
 }
 
 int game_create(struct Game * g)

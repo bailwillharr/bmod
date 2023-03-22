@@ -10,6 +10,6 @@ struct ComponentMesh {
 };
 
 struct GameComponent *component_mesh_create(struct GameObject *object, struct GameMesh *mesh);
-struct GameComponent *component_mesh_destroy(struct GameComponent *comp);
+void component_mesh_destroy(struct GameComponent *comp);
 
 #endif
