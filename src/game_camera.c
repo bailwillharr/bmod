@@ -9,9 +9,6 @@ void game_camera_update(struct Game * g, double frameDelta)
     vec3 dzRotated = {0.0f, 0.0f, g->input.moveDY * frameDelta * 60.0f};
     glm_vec3_rotate(dzRotated, g->ren.cam.rot[1], GLM_YUP);
 
-	vec3 oldCameraPos;
-	glm_vec3_copy(g->ren.cam.pos, oldCameraPos);
-
     glm_vec3_add(g->ren.cam.pos, dxRotated, g->ren.cam.pos);
     glm_vec3_add(g->ren.cam.pos, dzRotated, g->ren.cam.pos);
 

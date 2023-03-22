@@ -74,7 +74,7 @@ int main(int argc, char *argv[])
         for (int j = 0; j < scene->mMeshes[i]->mNumFaces; j++) {
             fwrite(scene->mMeshes[i]->mFaces[j].mIndices, sizeof(unsigned int), 3, fp);
         }
-        printf("ftell: %d\n", ftell(fp));
+        printf("ftell: %ld\n", ftell(fp));
         for (int j = 0; j < scene->mMeshes[i]->mNumVertices; j++) {
             fwrite(&scene->mMeshes[i]->mVertices[j].x, sizeof(float), 1, fp);
             fwrite(&scene->mMeshes[i]->mVertices[j].y, sizeof(float), 1, fp);
@@ -84,10 +84,6 @@ int main(int argc, char *argv[])
             fwrite(&scene->mMeshes[i]->mNormals[j].y, sizeof(float), 1, fp);
             fwrite(&scene->mMeshes[i]->mNormals[j].z, sizeof(float), 1, fp);
             fwrite(&scene->mMeshes[i]->mTextureCoords[0][j], sizeof(float), 2, fp);
-        }
-
-        for (int j = 0; j < header.vertex_count; j++) {
-            printf("vertex %d: %f, %f, %f\n", j, scene->mMeshes[i]->mNormals[j].x, scene->mMeshes[i]->mNormals[j].y, scene->mMeshes[i]->mNormals[j].z);
         }
 
         fclose(fp);
